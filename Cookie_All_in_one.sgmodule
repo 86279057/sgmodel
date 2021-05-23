@@ -1,0 +1,123 @@
+
+#!name=Cookie - All in one By nzw9314
+#!desc=该模块适用于定时签到脚本的Cookie获取. 集成全部: NobyDa、Chavy以及个人收集常用签到脚本. 您可以在使用后手动将其禁用，以免产生不必要的MITM.
+#!system=ios
+
+#收集来自：
+#https://raw.githubusercontent.com/nzw9314/Surge/master/Module/Cookie_All_in_one.sgmodule
+#
+#
+
+[Script]
+
+# > yichahucha
+# > 京东比价
+jd_price.js = type=http-response,pattern=https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig|basicConfig),requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js,script-update-interval=0
+# > 淘宝比价
+# 不生效或失效的需要卸载 tb 重装，注意不开脚本进 tb 会失效
+tb_price.js = requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js,type=http-request,pattern=^http://.+/amdc/mobileDispatch
+tb_price.js = requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js,type=http-response,pattern=^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail
+# > 奈飞评分
+nf_rating.js = script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js,type=http-request,pattern=^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D
+nf_rating.js = requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating.js,type=http-response,pattern=^https?://ios\.prod\.ftl\.netflix\.com/iosui/user/.+path=%5B%22videos%22%2C%\d+%22%2C%22summary%22%5D
+单集评分 = type=http-response,pattern=^https?://ios\.prod\.ftl\.netflix\.com/iosui/warmer/.+type=show-ath,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/nf_rating_season.js
+# > 微博去广告
+wb_launch.js = requires-body=1,script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_launch.js,type=http-response,pattern=^https?://(sdk|wb)app\.uve\.weibo\.com(/interface/sdk/sdkad.php|/wbapplua/wbpullad.lua)
+wb_ad.js = type=http-response,requires-body=1,max-size=-1,pattern=^https?://m?api\.weibo\.c(n|om)/2/(statuses/(unread|extend|positives/get|(friends|video)(/|_)(mix)?timeline)|stories/(video_stream|home_list)|(groups|fangle)/timeline|profile/statuses|comments/build_comments|photo/recommend_list|service/picfeed|searchall|cardlist|page|!/photos/pic_recommend_status|video/tiny_stream_video_list|photo/info),script-path=https://raw.githubusercontent.com/yichahucha/surge/master/wb_ad.js
+
+
+# > 网易云音乐
+#1. 先登录: <https://music.163.com/m/login>
+#2. 再访问: <https://music.163.com/#/user/level>
+#3. 提示: `获取会话: 成功!`
+neteasemusic.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/neteasemusic/neteasemusic.cookie.js,type=^https:\/\/music.163.com\/weapi\/user\/level,requires-body=true
+
+# > Choler
+# > 抖音 & TikTok Remove Ad & Logo
+douyin_ad = type=http-response,pattern=^https?:\/\/aweme\.snssdk\.com\/aweme\/v1\/(feed|aweme\/post|follow\/feed|nearby\/feed|search\/item|general\/search\/single|hot\/search\/video\/list)\/,requires-body=1,max-size=-1,script-path=https://Choler.github.io/Surge/Script/douyin.js
+
+# > 微信公众号
+WeChat.js = script-path=https://Choler.github.io/Surge/Script/WeChat.js,type=http-request,pattern=^https://mp\.weixin\.qq\.com/mp/getappmsgad
+
+# > onewayticket255
+# > 知乎 去广告
+zhihu people = type=http-response,requires-body=1,max-size=0,pattern=https://api.zhihu.com/people/,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20zhihu%20people.js
+zhihu feed = type=http-response,requires-body=1,max-size=0,pattern=https://api.zhihu.com/moments/recommend,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20zhihu%20feed.js
+zhihu recommend = type=http-response,requires-body=1,max-size=0,pattern=https://api.zhihu.com/topstory/recommend,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20zhihu%20recommend.js
+zhihu answer = type=http-response,requires-body=1,max-size=0,pattern=https://api.zhihu.com/v4/questions,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20zhihu%20answer.js
+
+# > 哔哩哔哩 精简&去广告
+//收藏排行 = type=http-response,requires-body=1,max-size=0,pattern=https://app.bilibili.com/x/v2/space\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20space.js
+首页 tab = type=http-response,requires-body=1,max-size=0,pattern=https://app.bilibili.com/x/resource/show/tab\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20tab.js
+bilibili feed = type=http-response,requires-body=1,max-size=0,pattern=https://app.bilibili.com/x/v2/feed/index\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20feed.js
+个人中心 = type=http-response,requires-body=1,max-size=0,pattern=https://app.bilibili.com/x/v2/account/mine\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20account.js
+bilibili view = type=http-response,requires-body=1,max-size=0,pattern=https://app.bilibili.com/x/v2/view\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20view%20relate.js
+bilibili reply = type=http-response,requires-body=1,max-size=0,pattern=https://api.bilibili.com/x/v2/reply/main\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20reply.js
+bilibili live = type=http-response,requires-body=1,max-size=0,pattern=https://api.live.bilibili.com/xlive/app-room/v1/index/getInfoByRoom\?access_key,script-path=https://raw.githubusercontent.com/onewayticket255/Surge-Script/master/surge%20bilibili%20live.js
+
+
+#签到脚本
+# NobyDa
+# > 京东
+# 浏览器登录 https://bean.m.jd.com 点击签到并且出现签到日历
+京东签到Cookie = type=http-request,pattern=https:\/\/api\.m\.jd\.com\/client\.action.*functionId=signBean,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/JD-DailyBonus/JD_DailyBonus.js
+# > 爱奇艺
+爱奇艺Cookie = type=http-request,pattern=https:\/\/iface\d\.iqiyi\.com\/.+?psp_cki=,script-path=https://raw.githubusercontent.com/NobyDa/Script/master/iQIYI-DailyBonus/iQIYI.js
+
+
+# > 网易云音乐
+#1. 先登录: <https://music.163.com/m/login>
+#2. 再访问: <https://music.163.com/#/user/level>
+#3. 提示: `获取会话: 成功!`
+#neteasemusic.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/neteasemusic/neteasemusic.cookie.js,type=^https:\/\/music.163.com\/weapi\/user\/level,requires-body=true
+
+
+# > 哔哩哔哩
+# 浏览器访问并登录: https://www.bilibili.com 或 https://live.bilibili.com 系统提示:获取Cookie: 成功
+bilibili.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/bilibili/bilibili.cookie.js,type=http-request,pattern=^https:\/\/(www|live)\.bilibili\.com\/?.?
+
+# > 腾讯视频
+# 手机浏览器访问并登录下https://film.qq.com/,随便选 1 部电影观看
+videoqq.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/videoqq/videoqq.cookie.js,type=http-request,pattern=^https:\/\/access.video.qq.com\/user\/auth_refresh
+
+# > 顺丰速运
+sfexpress.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/sfexpress/sfexpress.cookie.js,type=http-request,pattern=^https:\/\/sf-integral-sign-in.weixinjia.net\/app\/index
+sfexpress.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/sfexpress/sfexpress.cookie.js,type=http-request,pattern=^https:\/\/mcs-mimp-web.sf-express.com\/mcs-mimp\/share\/(.*?)Redirect
+
+# > 网易严选
+yanxuan.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/yanxuan/yanxuan.cookie.js,type=http-request,pattern=^https:\/\/m\.you\.163\.com\/xhr\/points\/index\.json
+
+# > 美团外卖
+wmmeituan.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/wmmeituan/wmmeituan.cookie.js,type=http-request,pattern=^https:\/\/promotion.waimai.meituan.com\/playcenter\/signIn\/entry
+wmmeituan.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/wmmeituan/wmmeituan.cookie.js,requires-body=true,type=http-request,pattern=^https:\/\/promotion.waimai.meituan.com\/playcenter\/signIn\/doaction
+# > 美团
+meituan.cookie.js = script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/meituan/meituan.cookie.js,requires-body=true,type=http-request,pattern=^https:\/\/i.meituan.com\/evolve\/signin\/signpost\/
+
+# > 京东618
+JD618.cookie = type=http-request,pattern=^https:\/\/api.m.jd.com\/client.action\?functionId=cakebaker_getHomeData,script-path=https://raw.githubusercontent.com/chavyleung/scripts/master/jd/jd.618.cookie.js,requires-body=true
+
+# > 饿了么 (By @syzzzf)
+elemGetCookies.js = script-path=https://raw.githubusercontent.com/songyangzz/QuantumultX/master/elem/elemGetCookies.js,type=http-request,pattern=^https:\/\/h5\.ele\.me\/restapi\/eus\/v\d\/current_user$
+
+# > 京东成长分 (By @barrymchen)
+jdczfcookie.js = script-path=https://raw.githubusercontent.com/nzw9314/QuantumultX/master/Task/jdczfcookie.js,type=http-request,pattern=^https:\/\/ms\.jr\.jd\.com\/gw\/generic\/bt\/h5\/m\/queryUserSignFlow
+
+# > 京东价格提醒(By toulanboy)
+京东价格提醒cookie获取 = type=http-request,pattern=https:\/\/apapia-history\.manmanbuy\.com\/ChromeWidgetServices\/WidgetServices\.ashx,script-path=https://raw.githubusercontent.com/toulanboy/scripts/master/jd_price_detect/jd_price_detect.js,requires-body=true
+
+# > 京东到家 (By @barrymchen, @GideonSenku & @Macsuny)
+jddj.js = script-path=https://raw.githubusercontent.com/Sunert/Scripts/master/Task/jddj.js,type=http-request,pattern=https:\/\/daojia\.jd\.com\/client\?_jdrandom=\d{13}&functionId=%2Fsignin
+
+# > 腾讯新闻 (By 红鲤鱼与绿鲤鱼与驴 & @Macsuny)
+腾讯新闻 = script-path=https://raw.githubusercontent.com/Sunert/Scripts/master/Task/txnews.js,type=http-request,pattern=https:\/\/api\.inews\.qq\.com\/event\/v1\/user\/event\/report\?, requires-body=true
+
+# > 滴滴出行 (By @zZPiglet)
+滴滴出行cookie = script-path=https://raw.githubusercontent.com/zZPiglet/Task/master/DiDi/DiDi.js,type=http-request,pattern=^https:\/\/as\.xiaojukeji\.com\/ep\/as\/toggles\?
+
+
+[MITM]
+skip-server-cert-verify = true
+hostname = *.smzdm.com,api.m.jd.com,app.bilibili.com, api.bilibili.com, api.live.bilibili.com,www.zhihu.com, api.zhihu.com, link.zhihu.com,mp.weixin.qq.com,r.inews.qq.com,iface?.iqiyi.com,*.video.qq.com,proxy.vac.qq.com,mtrace.qq.com,*.y.qq.com,node.kg.qq.com, api.inews.qq.com,sf-integral-sign-in.weixinjia.net, huiyuan.163.com,*.you.163.com,*.m.163.com,music.163.com, promotion.waimai.meituan.com, i.meituan.com, h5.ele.me,as.xiaojukeji.com
+ca-passphrase = AA90E240
+ca-p12 = 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
+
